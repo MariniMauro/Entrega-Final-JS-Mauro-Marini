@@ -1,40 +1,55 @@
-function stock() {
-    console.log("Stock displible de todas las figuras.")
+const carrito = []
+const mangas = [
+    { codigo: 1, nombre: "Bleach", precio: 3500 },
+    { codigo: 2, nombre: "Alice in Borderland", precio: 2600 },
+    { codigo: 3, nombre: "Blue Lock", precio: 2300 },
+    { codigo: 4, nombre: "Chainsaw Man", precio: 2100 },
+    { codigo: 5, nombre: "Dragon ball", precio: 1800 },
+    { codigo: 6, nombre: "Monster", precio: 4000 },
+    { codigo: 7, nombre: "One piece", precio: 1700 },
+    { codigo: 8, nombre: "Slam Dunk", precio: 4500 },
+    { codigo: 9, nombre: "Vagabond", precio: 3200 },
 
+]
+
+function listaDePrecios(){
+    const arrayProyeccion = mangas.map((manga) => {
+        return{
+            nombre:manga.nombre,
+            precio:manga.precio,
+            incremento10: parseFloat((manga.precio * 1.10).toFixed(2)),
+            descuento5: parseFloat((manga.precio * 0.95).toFixed(2))
+        }
+    })
+    console.table(arrayProyeccion)
 }
 
-function mostrarPrecio(codigo) {
-    switch (parseInt(codigo)) {
-        case 1:
-            alert("La figura de Batman cuesta $ 6000")
-            break;
-        case 2:
-            alert("La figura de Goku cuesta $ 2500")
-            break;
-        case 3:
-            alert("La  figura de Iron Man cuesta $ 3600")
-            break;
-        case 4:
-            alert("La figura de Pikachu cuesta $ 1900")
-            break;
-        case 5:
-            alert("La figura de Naruto cuesta $ 7000")
-            break;
-        default:
-            alert("⛔Error al seleccionar un codigo , vuelva a intentarlo.")
-    }
+function buscarMangas(codigo) {
+   let resultado = mangas.find((manga)=> manga.codigo === parseInt(codigo) )
+   return resultado 
 }
 
-function consultarFigura() {
-    let respuesta = confirm("¿Estas interesado en alguna figura?")
-    if (respuesta) {
-        let codigo = prompt("Ingresa el código numérico de la figura que deseas:")
-            if (codigo) {
-                mostrarPrecio(codigo)
-                stock()
-            }
+function finalizarCompra() {
+    const comprando = new Compra(carrito)
+   alert("Total de la compra $ " + comprando.obtenerSubtotal())
+   console.log("Total de la compra $ " + comprando.obtenerSubtotal())
+}
+
+
+function comprar(){
+    let codigo = prompt("Ingresa el codigo del manga deseado")
+    let mangaElegido = buscarMangas(codigo)
+    if (mangaElegido !== undefined) {
+        carrito.push(mangaElegido)
+        alert(mangaElegido.nombre + " a sido agregado correctamente")
+        let respuesta = confirm("Quieres agregar mas productos?")
+        if (respuesta === true) {
+            comprar()
+         } else {
+            finalizarCompra()
+         }
     } else {
-        console.warn("Vuelve cuando quieras😊.")
+        alert("erro al elegir codigo, actuliza la pagina para volver a comprar")
+
     }
 }
-

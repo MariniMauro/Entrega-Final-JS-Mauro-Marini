@@ -5,5 +5,18 @@
 body {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-weight: 500;
+  color: aliceblue;
+  background-image: url(../media/fondo1.jpg);
+  /* background-size:auto; */
+
+}
+
+.img{
+  width: 50px;
+   
+}
+
+h1{
+  color: brown;
 }
 
