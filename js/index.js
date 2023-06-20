@@ -1,55 +1,47 @@
-const carrito = []
-const mangas = [
-    { codigo: 1, nombre: "Bleach", precio: 3500 },
-    { codigo: 2, nombre: "Alice in Borderland", precio: 2600 },
-    { codigo: 3, nombre: "Blue Lock", precio: 2300 },
-    { codigo: 4, nombre: "Chainsaw Man", precio: 2100 },
-    { codigo: 5, nombre: "Dragon ball", precio: 1800 },
-    { codigo: 6, nombre: "Monster", precio: 4000 },
-    { codigo: 7, nombre: "One piece", precio: 1700 },
-    { codigo: 8, nombre: "Slam Dunk", precio: 4500 },
-    { codigo: 9, nombre: "Vagabond", precio: 3200 },
+const container = document.querySelector("div.container#container")
+const inputSearch = document.querySelector("input#inputSearch")
 
-]
-
-function listaDePrecios(){
-    const arrayProyeccion = mangas.map((manga) => {
-        return{
-            nombre:manga.nombre,
-            precio:manga.precio,
-            incremento10: parseFloat((manga.precio * 1.10).toFixed(2)),
-            descuento5: parseFloat((manga.precio * 0.95).toFixed(2))
-        }
-    })
-    console.table(arrayProyeccion)
-}
-
-function buscarMangas(codigo) {
-   let resultado = mangas.find((manga)=> manga.codigo === parseInt(codigo) )
-   return resultado 
-}
-
-function finalizarCompra() {
-    const comprando = new Compra(carrito)
-   alert("Total de la compra $ " + comprando.obtenerSubtotal())
-   console.log("Total de la compra $ " + comprando.obtenerSubtotal())
+function retornoCardHTML(manga) {
+    return `<div class="div-card">
+                <div class ="imagen"><img src="${manga.imagen}"></div>
+                <div class="manga"><p>${manga.nombre}</p></div>
+                <div class="precio"><p>$ ${manga.precio}</p></div>
+                <div class="comprar"><button id="${manga.codigo}" class="button button-outline">agregar</button></div>
+            </div>`
 }
 
 
-function comprar(){
-    let codigo = prompt("Ingresa el codigo del manga deseado")
-    let mangaElegido = buscarMangas(codigo)
-    if (mangaElegido !== undefined) {
-        carrito.push(mangaElegido)
-        alert(mangaElegido.nombre + " a sido agregado correctamente")
-        let respuesta = confirm("Quieres agregar mas productos?")
-        if (respuesta === true) {
-            comprar()
-         } else {
-            finalizarCompra()
-         }
-    } else {
-        alert("erro al elegir codigo, actuliza la pagina para volver a comprar")
+function cargarMangas() {
+    container.innerHTML = ''
+     arraysMangas.forEach((manga) => {
+        container.innerHTML += retornoCardHTML(manga)
+     })                
+    activarClickEnBotones()
+}
+cargarMangas()
 
+const filtrarMangas = ()=> {
+    let arrayResultado = arraysMangas.filter((manga)=> manga.nombre.toLowerCase().includes(inputSearch.value.trim().toLowerCase()))
+    if (arrayResultado.length > 0) {
+        cargarMangas(arrayResultado)
     }
 }
+inputSearch.addEventListener("search", filtrarMangas)
+
+
+
+function activarClickEnBotones() {
+    const botones = document.querySelectorAll("button.button.button-outline")
+          for (let button of botones) { 
+                button.addEventListener("click", (e)=> { 
+                   const mangaElegido = arraysMangas.find((manga)=> manga.codigo === parseInt(e.target.id))
+                    carritoMangas.push(mangaElegido)
+                    mostrarMensaje(`El manga ${mangaElegido.nombre} se agrego correctamente`, "red")
+                    localStorage.setItem("miCarrito", JSON.stringify(carritoMangas))
+                    
+                    
+                })  
+          }
+}
+
+
