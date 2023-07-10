@@ -53,4 +53,5 @@ function obtenerProductos() {
       .then((datos)=> arraysMangas.push(...datos) )
       .then(()=> cargarMangas())
 }
+
 obtenerProductos()
