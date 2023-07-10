@@ -1,12 +1,11 @@
 const tbody = document.querySelector("tbody")
-
+const botonComprar = document.querySelector("#carritoComprar");
 
 function retornarTablaHTML(mangaCarrito, index) {
-    return `<tr id="fila-${index}">
+    return `<tr >
                 <td>${mangaCarrito.codigo}</td>
                 <td>${mangaCarrito.nombre}</td>
                 <td>${mangaCarrito.precio}</td>
-                <td class="button-eliminar-item">⛔️</td>
             </tr>`
             
 }
@@ -26,13 +25,25 @@ if (carritoMangas.length > 0) {
 
 }
 
+const completarCompra = ()=> { 
+    localStorage.clear()
+    mensajetoast("Compra realizara con exito, click aqui para seguir comprando")
 
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('button-eliminar-item')) {
-      const filaId = e.target.closest('tr').id;
-      const index = parseInt(filaId.split('-')[1])
-      carritoMangas.splice(index, 1)
-      localStorage.setItem('miCarrito', JSON.stringify(carritoMangas))
-      e.target.closest('tr').remove()
+}
+
+botonComprar.addEventListener("click", completarCompra)
+
+
+function mensajetoast(mensaje) {
+    Toastify({
+    text: mensaje,
+    duration: 3000,
+    destination: "index.html",
+    gravity: "top", 
+    position: "center",
+    stopOnFocus: true,
+    style: {
+      background: "red",
     }
-  })
+  }).showToast();
+}

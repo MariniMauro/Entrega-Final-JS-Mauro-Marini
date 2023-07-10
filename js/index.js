@@ -1,5 +1,4 @@
 const container = document.querySelector("div.container#container")
-const inputSearch = document.querySelector("input#inputSearch")
 
 function retornoCardHTML(manga) {
     return `<div class="div-card">
@@ -10,7 +9,6 @@ function retornoCardHTML(manga) {
             </div>`
 }
 
-
 function cargarMangas() {
     container.innerHTML = ''
      arraysMangas.forEach((manga) => {
@@ -20,23 +18,13 @@ function cargarMangas() {
 }
 cargarMangas()
 
-const filtrarMangas = ()=> {
-    let arrayResultado = arraysMangas.filter((manga)=> manga.nombre.toLowerCase().includes(inputSearch.value.trim().toLowerCase()))
-    if (arrayResultado.length > 0) {
-        cargarMangas(arrayResultado)
-    }
-}
-inputSearch.addEventListener("search", filtrarMangas)
-
-
-
 function activarClickEnBotones() {
     const botones = document.querySelectorAll("button.button.button-outline")
           for (let button of botones) { 
                 button.addEventListener("click", (e)=> { 
                    const mangaElegido = arraysMangas.find((manga)=> manga.codigo === parseInt(e.target.id))
                     carritoMangas.push(mangaElegido)
-                    mostrarMensaje(`El manga ${mangaElegido.nombre} se agrego correctamente`, "red")
+                    mensajetoast(`${mangaElegido.nombre} se agrego correctamente`)
                     localStorage.setItem("miCarrito", JSON.stringify(carritoMangas))
                     
                     
@@ -44,4 +32,25 @@ function activarClickEnBotones() {
           }
 }
 
+function mensajetoast(mensaje) {
+    Toastify({
+    text: mensaje,
+    duration: 3000,
+    close: true,
+    gravity: "top", 
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background: "red",
+    }
+  }).showToast();
+}
 
+
+function obtenerProductos() {
+  fetch(URL)
+      .then((response)=> response.json() )
+      .then((datos)=> arraysMangas.push(...datos) )
+      .then(()=> cargarMangas())
+}
+obtenerProductos()
